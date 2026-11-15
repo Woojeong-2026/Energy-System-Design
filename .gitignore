@@ -1,0 +1,7 @@
+# MATLAB 임시/자동저장 파일
+*.asv
+*.m~
+*.mat
+slprj/
+# 실행 결과물 (main_charging_A.m 으로 재생성 가능)
+results/
