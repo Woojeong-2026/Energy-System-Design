@@ -1,9 +1,13 @@
-# Noon Energy 탄소-산소 에너지 저장 시스템 — 통합 모델 (팀원 3)
+# Noon Energy 탄소-산소 에너지 저장 시스템 — 통합 모델 (정우정)
 
 Energy System Design (38609) 2026 Fall Term Project.
 기준 문서는 `Term_Project_2026_Noon_Energy_revV3.pdf` 이고, MATLAB R2026a + Cantera 3.0.0 기준입니다.
+팀원 1: Charging
+팀원 2: Discharging
+팀원 3: 정우정
 
-팀원 3 담당 범위: **Cantera 물성 도우미 함수, 전체 통합 `main.m`, 민감도 분석**
+
+2026. 11. 15 기준 Cantera 물성 도우미 함수, 전체 통합 `main.m`, 민감도 분석 완료. -팀원 3(정우정)-
 
 ## 실행
 
