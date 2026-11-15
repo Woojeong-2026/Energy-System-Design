@@ -3,5 +3,5 @@
 *.m~
 *.mat
 slprj/
-# 실행 결과물 (main_charging_A.m 으로 재생성 가능)
+# 실행 결과물 (main.m 으로 재생성 가능)
 results/
