@@ -1,0 +1,157 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>충전 파트 발표 구성과 질문 대응</title><style>body{font:17px/1.75 system-ui,-apple-system,"Malgun Gothic",sans-serif;max-width:1000px;margin:40px auto;padding:0 24px;color:#182a38;background:#fff}a{color:#075fa1}h1,h2,h3{line-height:1.35}h2{margin-top:2em}table{border-collapse:collapse;display:block;max-width:100%;overflow:auto}td,th{border:1px solid #d7dde1;padding:8px 12px;text-align:left}pre{background:#f3f5f7;padding:16px;overflow:auto}code{font-family:Consolas,monospace}img{max-width:100%}nav{margin-bottom:30px}li{margin:8px 0}.notice{padding:16px;background:#f3f5f7}</style></head><body><nav><a href="../../START_HERE.html">처음 화면으로</a></nav><h1 id="_1">충전 파트 발표 구성과 질문 대응</h1>
+<p>아래는 발표 준비용 예시다. ‘실행했다’, ‘검증했다’는 표현은 본인이 확인한 증거에 맞춰 사용한다.
+기존 팀 저장소의 공정 해석식과 충전 검증 확장의 검증 확장을 구분한다. MATLAB 실행을 하기 전에는 Python 참고 계산을 MATLAB 결과로 표시하지 않는다.</p>
+<h2 id="_2">발표의 중심 문장</h2>
+<blockquote>
+<p>제 충전 파트의 목적은 정해진 탄소 저장률을 만족하는 순환 공정의 상태와 총 전기 입력을 구하는 것입니다. 보존법칙으로 유량을 닫고, 화학평형과 전기화학으로 상태를 정한 다음, 열회수의 온도 조건을 적용했습니다. 최종 효율뿐 아니라 그 효율이 가능한 물리적 조건을 만족하는지 확인하는 데 중점을 두었습니다.</p>
+</blockquote>
+<h2 id="8">슬라이드 8장 구성</h2>
+<table>
+<thead>
+<tr>
+<th>장</th>
+<th>보여줄 자료</th>
+<th>꼭 말할 주장</th>
+<th>연결되는 코드/증거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. 경계와 목표</td>
+<td>스트림 1–13 공정도</td>
+<td>탄소 저장, 산소 방출, 정상상태, 1 kmol/s 기준</td>
+<td>PDF Figure 2, cfg</td>
+</tr>
+<tr>
+<td>2. 모델 가정과 담당 설계</td>
+<td>고정 조건/개선 변수 표</td>
+<td>기준 조건을 성능이 좋아지도록 임의 조정하지 않음</td>
+<td>noon_config.m</td>
+</tr>
+<tr>
+<td>3. 재순환 해석</td>
+<td>Xb=2ξ, Xb=f+ξ와 평형식</td>
+<td>수지로 ξ·b, 평형으로 a를 결정</td>
+<td>charging_mode 2–4절</td>
+</tr>
+<tr>
+<td>4. SOEC의 전기와 열</td>
+<td>I, Vch, Vtn, Wcell, Qcell</td>
+<td>등온 유지를 위한 열까지 충전 비용에 포함</td>
+<td>E_cell_CO, charging_mode 5절</td>
+</tr>
+<tr>
+<td>5. 열회수의 가능 조건</td>
+<td>HEX T–Q 곡선, link 온도 비교</td>
+<td>발열이 존재해도 전부 회수할 수 없음</td>
+<td>hex_counterflow, settle_heat</td>
+</tr>
+<tr>
+<td>6. 기준 성능과 손실</td>
+<td>stream/heat/summary 표</td>
+<td>입력 전력의 구성과 무엇을 방출하는지</td>
+<td>R.heat, R.P_in, R.eta_ch</td>
+</tr>
+<tr>
+<td>7. 검증</td>
+<td>잔차표+온도 무시 오류 사례</td>
+<td>수지와 구성 법칙을 별도로 검사</td>
+<td>verify_charging, Python compare/tests</td>
+</tr>
+<tr>
+<td>8. 스윕·개선·한계</td>
+<td>압력/온도 그래프, 후보 tradeoff</td>
+<td>충전 효율 개선과 왕복 효율 개선은 다를 수 있음</td>
+<td>main/run_roundtrip, sweep 결과</td>
+</tr>
+</tbody>
+</table>
+<p>수치가 많은 스트림 전체표는 부록으로 보내고, 본문에서는 결과를 결정하는 이유를 설명한다. 슬라이드의 숫자·단위·부호와 공정도 스트림 번호를 일치시킨다.</p>
+<h2 id="_3">‘왜 이렇게 코드를 짰나’에 대한 설명</h2>
+<table>
+<thead>
+<tr>
+<th>선택</th>
+<th>공학적/계산적 의도</th>
+<th>대가 또는 한계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cfg에 조건을 모음</td>
+<td>기준·스윕 조건을 재현하고 두 모드의 조건 불일치 방지</td>
+<td>입력 검증이 별도로 필요</td>
+</tr>
+<tr>
+<td>재순환을 해석식으로 제거</td>
+<td>주어진 단순 반응망에서 불필요한 반복 수렴 문제 제거</td>
+<td>퍼지·부반응 추가 시 재유도</td>
+</tr>
+<tr>
+<td>Cantera 절대 엔탈피 사용</td>
+<td>생성엔탈피와 온도 의존성을 일관되게 반영</td>
+<td>물성 모델/이상기체 가정 의존</td>
+</tr>
+<tr>
+<td>전기와 열을 분리</td>
+<td>IV와 등온 유지 열을 둘 다 평가</td>
+<td>실제 전기·열 손실은 과제 가정에 한정</td>
+</tr>
+<tr>
+<td>link를 별도 함수로 정산</td>
+<td>온도 조건·회수 상한·잔여 가열을 명시해 중복 차감 방지</td>
+<td>단순 on/off 규칙의 경계 불연속</td>
+</tr>
+<tr>
+<td>R 인터페이스 유지</td>
+<td>팀 main·방전·통합 효율과 연결</td>
+<td>필드 이름·단위·스트림 순서를 지켜야 함</td>
+</tr>
+<tr>
+<td>별도 검증기 사용</td>
+<td>계산 결과의 ‘스스로 맞다고 보고한 값’을 그대로 믿지 않음</td>
+<td>같은 물성·가정을 쓰는 부분은 독립성이 제한됨</td>
+</tr>
+</tbody>
+</table>
+<h2 id="90">90초 설명 예시</h2>
+<p>“충전은 CO₂를 바로 고체 탄소로 바꾸는 단일 반응이 아니라 SOEC와 Boudouard 반응기가 연결된 재순환 공정입니다. 따라서 먼저 재순환 수지를 풀었습니다. 무퍼지 정상상태에서 탄소 저장률은 신선 CO₂ 공급률과 같고, 탄소 1 kmol을 저장하려면 셀에서 CO 2 kmol을 만들어야 합니다. 남는 CO 순환량은 반응기 평형으로 결정됩니다.</p>
+<p>그다음 지정된 조성으로 Nernst 전압과 Faraday 전류를 계산했습니다. 충전 비용에는 셀의 IV만 넣지 않고, 셀과 히터의 잔여 열수요를 전기가열로 포함했습니다. 기준에서 셀은 850°C, 반응기는 650°C라 반응기의 발열을 셀에 직접 보낼 수 없습니다. 이 조건을 무시하면 효율이 과대평가됩니다.</p>
+<p>검증에서는 장치별 원소·에너지 잔차와 함께 평형, 전류 단위, 전압 평가 조성, 열회수 온도 조건을 따로 검사합니다. 다른 계산 경로의 Python/Cantera 결과도 대조 기준으로 준비했습니다. 현재 확인한 것은 정상상태 모델의 수치적 일관성이며, 실제 장치의 크기나 반응속도까지 검증한 것은 아닙니다.”</p>
+<p>마지막에 MATLAB 실행을 완료했다면 실행한 케이스·최대 잔차·대조 오차를 실제 결과로 덧붙인다. 미실행 상태에서는 “MATLAB 실행은 남아 있다”고 밝힌다.</p>
+<h2 id="12">예상 질문 12개</h2>
+<h3 id="1-70-1-kmols">1. 왜 70% 전환인데 탄소는 1 kmol/s 저장되나?</h3>
+<p>70%는 1회 통과 값이다. 미반응 CO₂와 중간체 CO가 전량 재순환된다. 두 정상상태 수지를 함께 풀면 ξ=f가 된다.</p>
+<h3 id="2-2f-4fnc">2. 왜 전류를 2F가 아닌 4F·nC로도 쓸 수 있나?</h3>
+<p>셀에서 변환되는 CO 한 몰당 전자 두 몰이다. 탄소 한 몰을 석출하려면 CO 두 몰이 필요하므로 탄소 기준으로는 전자 네 몰이다. kmol/s를 mol/s로 변환한다.</p>
+<h3 id="3">3. 왜 반응기 밖에서는 평형을 다시 풀지 않나?</h3>
+<p>과제에서 반응기·셀 외부의 조성은 동결된다고 가정했다. 각 냉각기에서 모두 equilibrium을 호출하면 다른 공정을 풀게 된다.</p>
+<h3 id="4">4. 왜 탄소를 기체 몰분율에 넣지 않나?</h3>
+<p>탄소는 분리된 순수 고체상이고 활동도 1이다. 기체 분압은 CO/CO₂ 기체 유량의 합으로 계산한다.</p>
+<h3 id="5">5. 왜 모든 발열을 가열에서 빼지 않나?</h3>
+<p>열량뿐 아니라 온도 수준과 허용 경로가 맞아야 한다. 기준 650→850°C는 직접 열전달 조건을 만족하지 않는다.</p>
+<h3 id="6">6. 전압 손실을 줄이면 왜 충전 효율이 그대로일 수 있나?</h3>
+<p>기준 흡열·link off 조건에서 셀의 엔탈피 증가는 고정이다. IV가 줄어들면 같은 양의 전기가열이 더 필요해 총 입력이 같다. 다른 열공급원이나 운전 영역에서는 결론이 달라질 수 있다.</p>
+<h3 id="7">7. 수지가 닫히면 왜 충분하지 않나?</h3>
+<p>잘못 정한 열·전기를 서로 보상하면 수지를 닫을 수 있다. 반응 평형, Faraday 전류, 지정 조성의 전압, 열전달 방향 같은 독립 조건이 필요하다.</p>
+<h3 id="8-python">8. Python 코드가 같으면 실제 설계도 맞나?</h3>
+<p>아니다. 서로 다른 구현이 같은 모델을 계산한다는 증거다. 물성 자료·반응망·손실 가정은 공유하므로 실험 validation은 별도다.</p>
+<h3 id="9-870c">9. 870°C 근처 효율이 갑자기 변하는 것은 실제 현상인가?</h3>
+<p>20 K 이상일 때 link를 켜는 과제의 on/off 규칙에서 생기는 모델 특성이다. 실제 열교환기는 면적·유량·제어·전달 저항 때문에 같은 불연속을 보인다고 단정할 수 없다.</p>
+<h3 id="10-10-bar">10. 압력 상승이 좋으면 10 bar가 최적인가?</h3>
+<p>충전 순환량·가열에는 유리하지만 방전 압축 전력이 늘 수 있다. 왕복 효율과 두 모드의 같은 탄소 재고, 장치 비용·크기를 함께 봐야 한다.</p>
+<h3 id="11-hex">11. 실제 HEX 면적이나 셀 개수를 정했나?</h3>
+<p>아직 아니다. HEX에는 U/형상/압력강하, 셀에는 전류밀도·직렬/병렬 구성 정보가 필요하다. 이번 범위는 공정의 상태·부하·효율이다.</p>
+<h3 id="12_1">12. 본인이 추가한 설계·코딩 기여는 무엇인가?</h3>
+<p>원래 팀 구현과 추가한 검증을 구분해 답한다. 예: “기존 충전 수지와 평형 해를 직접 유도해 검토했고, 입력 조건 검사와 원시 결과 재검산·오류 주입 시험을 추가하여 통합 인터페이스를 유지했습니다.” 실제로 수행·이해한 부분에 한해서 말한다.</p>
+<h2 id="_4">발표 전 증거 체크</h2>
+<ul>
+<li>MATLAB 실행한 revision과 <code>which charging_mode -all</code>의 실제 경로 기록.</li>
+<li>기준값·스윕표를 같은 실행에서 생성.</li>
+<li><code>independent_checks.csv</code> 실패 0 확인.</li>
+<li>MATLAB <code>raw.json</code>을 Python <code>--compare</code>로 대조하고 결과 저장.</li>
+<li>큰 숫자 385.94 MA가 뜻하는 기준 유량과 등가 전류 설명 준비.</li>
+<li>Cantera 반응 엔탈피와 지정 LHV의 반올림 차이를 수지 오류로 오해하지 않기.</li>
+<li>과제 기준 결과와 개선 제안을 분리, 개선에서 바꾼 가정 명시.</li>
+<li>실제 장치 실험·MATLAB 미실행 항목을 완료한 것처럼 표시하지 않기.</li>
+</ul></body></html>

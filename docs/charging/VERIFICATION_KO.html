@@ -1,0 +1,168 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>검증 결과와 남은 확인</title><style>body{font:17px/1.75 system-ui,-apple-system,"Malgun Gothic",sans-serif;max-width:1000px;margin:40px auto;padding:0 24px;color:#182a38;background:#fff}a{color:#075fa1}h1,h2,h3{line-height:1.35}h2{margin-top:2em}table{border-collapse:collapse;display:block;max-width:100%;overflow:auto}td,th{border:1px solid #d7dde1;padding:8px 12px;text-align:left}pre{background:#f3f5f7;padding:16px;overflow:auto}code{font-family:Consolas,monospace}img{max-width:100%}nav{margin-bottom:30px}li{margin:8px 0}.notice{padding:16px;background:#f3f5f7}</style></head><body><nav><a href="../../START_HERE.html">처음 화면으로</a></nav><h1 id="_1">검증 결과와 남은 확인</h1>
+<p>검증 갱신일: 2026-11-18 (한국 시간). 원본 모델 revision: <code>fb28621885af0df18ac6d20412ad4db788992efe</code>.
+첨부 과제 PDF와 코드의 charging 범위를 대조했습니다.</p>
+<h2 id="_2">판단</h2>
+<p>검토한 식·경계조건은 과제의 정상상태 충전 공정과 일치합니다. 독립 Cantera 계산값도 README의 반올림 참고 수치와 일치합니다.
+따라서 기존 충전 모델을 버리기보다 <strong>입력 검증과 원시 출력의 재검산을 보강</strong>하는 방향을 택했습니다.
+<code>modes/charging_mode.m</code>은 기존 모델의 물리식/인터페이스를 유지합니다. 기존 코드 기여와 추가한 검증 코드는 <a href="CHARGING_STUDY_GUIDE_KO.html">지침서</a>의 연결 설명에 구분했습니다.</p>
+<p>이 판단은 MATLAB에서 충전 코드를 실행해 성공했다는 뜻이나, 최적 공정/실제 제작 설계가 완료됐다는 뜻은 아닙니다.</p>
+<h2 id="_3">실제 수행</h2>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PDF와 원본 코드 검토</td>
+<td>완료: 조성, 번호, 전압, 단위, 회수 조건, 경계, 효율</td>
+</tr>
+<tr>
+<td>Python 런타임</td>
+<td>Python 3.11.18, Cantera 3.0.0, NumPy 1.26.4</td>
+</tr>
+<tr>
+<td>기준+필수 압력/온도</td>
+<td>9개 케이스, 각 46개 수치 검사 통과</td>
+</tr>
+<tr>
+<td>Python 회귀·오류 주입</td>
+<td>8개 test method 통과(여러 subtest 포함)</td>
+</tr>
+<tr>
+<td>MATLAB 소스 정적 검사</td>
+<td>MISS_HIT 0.9.44, 6개 .m 파일, 오류/경고 없음</td>
+</tr>
+<tr>
+<td>그림</td>
+<td>pressure/cell-temperature 스윕 및 HEX 내부 T–Q PNG 생성·열람 확인</td>
+</tr>
+<tr>
+<td>MATLAB/Cantera toolbox 실행</td>
+<td><strong>미실행</strong>: 이 환경에 MATLAB 없음</td>
+</tr>
+<tr>
+<td>MATLAB 출력과 Python 비교</td>
+<td><strong>미실행</strong>: MATLAB raw.json을 만든 뒤 실행 필요</td>
+</tr>
+<tr>
+<td>통합 방식</td>
+<td>기존 charging 함수에 입력 검사 추가, main_charging과 검산·독립 계산·문서 추가</td>
+</tr>
+</tbody>
+</table>
+<p>JSON 대조 CLI는 Python 기준 JSON으로 입출력 경로를 시험했습니다. 이것을 MATLAB 대조 성공으로 계산하지 않았습니다.
+원본 README도 Python 참고값이라고 밝히고 있으므로, README와의 일치가 MATLAB 실행을 대신하지 않습니다.
+정적 검사는 문법/일부 코드 문제를 확인하며 Cantera API의 런타임 동작을 보증하지 않습니다.</p>
+<h2 id="_4">독립 계산 결과</h2>
+<table>
+<thead>
+<tr>
+<th>케이스</th>
+<th style="text-align: right;">Pin [MW]</th>
+<th style="text-align: right;">ηch [%]</th>
+<th style="text-align: right;">n4 [kmol/s]</th>
+<th style="text-align: right;">Vch [V]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>기준 5 bar, 850°C</td>
+<td style="text-align: right;">637.9587</td>
+<td style="text-align: right;">61.6811</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.14918</td>
+</tr>
+<tr>
+<td>1 bar</td>
+<td style="text-align: right;">646.1573</td>
+<td style="text-align: right;">60.8985</td>
+<td style="text-align: right;">4.2525</td>
+<td style="text-align: right;">1.12437</td>
+</tr>
+<tr>
+<td>2 bar</td>
+<td style="text-align: right;">641.5321</td>
+<td style="text-align: right;">61.3375</td>
+<td style="text-align: right;">3.7672</td>
+<td style="text-align: right;">1.13368</td>
+</tr>
+<tr>
+<td>5 bar</td>
+<td style="text-align: right;">637.9587</td>
+<td style="text-align: right;">61.6811</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.14918</td>
+</tr>
+<tr>
+<td>10 bar</td>
+<td style="text-align: right;">636.3338</td>
+<td style="text-align: right;">61.8386</td>
+<td style="text-align: right;">3.2218</td>
+<td style="text-align: right;">1.16258</td>
+</tr>
+<tr>
+<td>셀 750°C</td>
+<td style="text-align: right;">621.2116</td>
+<td style="text-align: right;">63.3440</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.18604</td>
+</tr>
+<tr>
+<td>셀 800°C</td>
+<td style="text-align: right;">629.5531</td>
+<td style="text-align: right;">62.5047</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.16758</td>
+</tr>
+<tr>
+<td>셀 850°C</td>
+<td style="text-align: right;">637.9587</td>
+<td style="text-align: right;">61.6811</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.14918</td>
+</tr>
+<tr>
+<td>셀 900°C</td>
+<td style="text-align: right;">646.4245</td>
+<td style="text-align: right;">60.8733</td>
+<td style="text-align: right;">3.3923</td>
+<td style="text-align: right;">1.13082</td>
+</tr>
+</tbody>
+</table>
+<p>9개 중 기준·P5·T850은 의도적으로 같은 조건을 별도 저장했습니다. 서로 다른 조건은 총 7개입니다.
+각 압력 스윕은 Tcell=850°C, 각 셀 온도 스윕은 P=5 bar이며 TB,ch=650°C를 유지합니다.</p>
+<p>기준 전체 에너지 잔차: 약 −1.95×10⁻⁵ W. 9개 케이스 전체 에너지 잔차 절댓값 최대 약 4.23×10⁻⁵ W.
+기준 HEX 엔트로피 생성률: 약 30.140 kW/K ≥ 0. 최소 온도차: 109.049 K.
+Cantera의 25°C 저장 반응 엔탈피는 약 393.507750 MW, 효율 계산의 지정 LHV 유량은 393.500000 MW입니다.
+그 차이 약 7.75 kW를 수지 오류나 추가 손실로 분류하면 안 됩니다.</p>
+<h2 id="_5">시험이 확인한 오류</h2>
+<ul>
+<li>탄소 저장 유량을 1→0.9 kmol/s로 변경하면 실패.</li>
+<li>등가 전류를 1000으로 나눠 kmol/mol 변환을 누락하면 실패.</li>
+<li>기준 조건에 불가능한 thermal link 1 MW를 기록하면 실패.</li>
+<li>Vch에서 손실 부호를 바꾸면 실패.</li>
+<li>이미 반영된 HEX 회수열을 Pin에서 또 빼면 실패.</li>
+<li>잘못된 배열 크기, NaN, 필수 config 누락은 오류로 거부.</li>
+<li>유량 0.01/2/10배: 전력은 유량 비례, 효율은 동일.</li>
+<li>TB,ch=869.999°C와 870°C: 20 K 조건에 따라 link off/on.</li>
+<li>ε=0: Qhex=0, 예열 이득 소멸, 입력 전력 증가.</li>
+<li>Xsoec=0 또는 1, 음압, 영유량, 유용도&gt;1, 표준압력 불일치 등을 거부.</li>
+</ul>
+<h2 id="matlab">사용자 MATLAB에서 마지막으로 할 일</h2>
+<ol>
+<li>저장소 루트에서 <code>main_charging</code>을 실행.</li>
+<li><code>results/charging_review/summary.csv</code>와 각 케이스의 검사표를 확인.</li>
+<li>각 케이스 <code>raw.json</code>을 Python <code>--compare</code>에 넣어 대조.</li>
+<li>기존 전체 <code>main</code>으로 방전·왕복 효율을 포함한 통합 결과 재생성.</li>
+<li>발표에는 MATLAB 결과표와 검산 CSV를 사용하고, 개선안에는 기본 가정에서 바뀐 조건을 명시.</li>
+</ol>
+<p>한 케이스라도 실패하면 해당 <code>independent_checks.csv</code>/<code>comparison.csv</code>의 항목부터 확인합니다.
+수지 검사 통과 후에도 cell current density, reaction kinetics, HEX area와 같은 실제 장치 정보는 별도 설계가 필요합니다.</p>
+<h2 id="_6">재현 증거 파일</h2>
+<p><a href="reference_results/python_tests.txt">Python 시험 로그</a>, <a href="reference_results/matlab_static_lint.txt">MATLAB 정적 검사 로그</a>, <a href="reference_results/summary.csv">9개 케이스 요약</a>, <a href="reference_results/base_checks.csv">기준 수지 검사</a>를 함께 저장했습니다. 인터랙티브 학습의 22개 계산과 6개 오류 시나리오는 <a href="interactive/lesson_verification.json">학습 검증 기록</a>에서 확인합니다.</p>
+<p><img alt="Python 독립 계산 압력·온도 스윕" src="reference_results/charging_sweeps.png" /></p>
+<p><img alt="Python 독립 계산 HEX 내부 온도" src="reference_results/base_hex_profile.png" /></p></body></html>

@@ -1,0 +1,13 @@
+test_faults_are_detected (test_reference.ChargingTests.test_faults_are_detected) ... ok
+test_hand_inventory_and_electron_count (test_reference.ChargingTests.test_hand_inventory_and_electron_count) ... ok
+test_invalid_inputs (test_reference.ChargingTests.test_invalid_inputs) ... ok
+test_malformed_export_is_rejected (test_reference.ChargingTests.test_malformed_export_is_rejected) ... ok
+test_prescribed_cases (test_reference.ChargingTests.test_prescribed_cases) ... ok
+test_scale_invariance (test_reference.ChargingTests.test_scale_invariance) ... ok
+test_thermal_link_boundary (test_reference.ChargingTests.test_thermal_link_boundary) ... ok
+test_zero_heat_recovery (test_reference.ChargingTests.test_zero_heat_recovery) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.099s
+
+OK

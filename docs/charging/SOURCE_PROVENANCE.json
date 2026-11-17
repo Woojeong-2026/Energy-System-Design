@@ -1,0 +1,31 @@
+{
+  "repository": "https://github.com/Woojeong-2026/Energy-System-Design",
+  "assignment_pdf": "Term_Project_2026_Noon_Energy_revV3.pdf",
+  "assignment_pdf_sha256": "6182022ba3c20caf3e08e6dcdd41193fa6f8fe2550b075397525ecb5b6458a2a",
+  "matlab_executed": false,
+  "cantera_version": "3.0.0",
+  "upstream_file_sha256": {
+    ".gitignore": "a04282f7e224e95edf18928f9d11b3fef3f0544eeedd55c30c77b88604d7aba9",
+    "README.md": "dca533370056e0c2c4571aec47493432d7eac08fae5d703bd58bc4c986742ce3",
+    "main.m": "3b95da87047316e7eaf2a9faddb6a20323256e710b9697cd9606aa878bfcbd03",
+    "modes/charging_mode.m": "7264c0cab933b3dc0b05ad00451220c2e01060f821da73a361b39578aeebadb0",
+    "modes/discharging_mode.m": "a909b13c8e310652afd5111f960cbba645bff678174f1bf4037dc8629dc4266a",
+    "noon_config.m": "d51aa3edc2612712dc075c2834cf68df2ed1215937b2df5fbed7489ca0cb27db",
+    "system/balance_table.m": "f6fff948c5d908787289ebb5def2a19cec60e74e63e7ae7e35ea1d6b02c25557",
+    "system/heat_table.m": "4deb3bab2a91d5844e871d8ba311a97be3aae1eaabb4ca9e124f5182e54c62c1",
+    "system/hex_counterflow.m": "a766831984e644755486b2653d793f440e167b04d89513bc866966035b273fee",
+    "system/run_roundtrip.m": "f499d0b700a9fd97a99dccc2e5894d47c0d96175c7c6ca7de6235cf00f4a29c5",
+    "system/settle_heat.m": "6e2c3895c4ff8f18f04539c8c2db333c035f3be5305d013f1cfe91f0bc9e44b9",
+    "system/stream_table.m": "80d43da8beb9e37c07b7bfe9482c61263aad0d5f6681aa5df81a344fba1d4c11",
+    "thermo/E_cell_CO.m": "21f508a3ef31fa10e9340e00ad4dc989a42d303a30ad97234aed30f74ced96d9",
+    "thermo/K_boudouard.m": "59f4cf7bb8a6eefe2a492fa52a9fd9d4c164e9afe8e4dd1974bf8134645d7f77",
+    "thermo/sp_g0.m": "a8e72065cba9414481d0bca776ed7e8dd9f34d7c66074477482a72d7cd1620e0",
+    "thermo/sp_h.m": "880bd5aeadfd61f1a52a683451d8561709651fde8a2faeee0bf78dd0008baeee",
+    "thermo/sp_s0.m": "a709bcdcdaf96c5f5227d85d7c9c8dcf5b8dd35d05e3a65d55fa03d0ca0d274d",
+    "thermo/stream_H.m": "e88e34d2f312ca3061ceed8b6485fd7154c9c641eafb63f45e0736d34af16460",
+    "thermo/stream_T.m": "406a2ba7a30cfa131d89ef6aa089e141487a04d288ea26c10d5904fe03a44ab2",
+    "thermo/thermo_init.m": "779d1fd4f25c963198e004a26bf21955ece17ec89e659590576440f58111ae5e"
+  },
+  "model_baseline_commit": "fb28621885af0df18ac6d20412ad4db788992efe",
+  "integration_date_KST": "2026-11-18"
+}

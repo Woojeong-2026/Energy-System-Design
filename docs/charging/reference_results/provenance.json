@@ -1,0 +1,7 @@
+{
+  "runtime": "Python independent reference",
+  "cantera_version": "3.0.0",
+  "model_baseline_commit": "fb28621885af0df18ac6d20412ad4db788992efe",
+  "reference_pressure_Pa": 100000.0,
+  "matlab_executed": false
+}
