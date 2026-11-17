@@ -1,4 +1,7 @@
 function R = charging_mode(cfg, th)
+% Charging validation extension based on Woojeong-2026/Energy-System-Design
+% commit fb28621885af0df18ac6d20412ad4db788992efe. Original equations retained.
+% Added input-domain checks; see charging/verify_charging.m for independent checks.
 % CHARGING_MODE  충전 모드 정상상태 모델 (Figure 2(a), Stream 1~13)
 %
 %   R = charging_mode(cfg, th)
@@ -19,7 +22,7 @@ function R = charging_mode(cfg, th)
 %   R.P_in    : 충전 입력 전력 [W],  R.nC : 탄소 저장 속도 [kmol/s]
 %   R.eta_ch  : 충전 효율 [-]                                   -> (c)
 %
-% 이 파일은 팀원 1(충전 담당) 모듈 자리다. 위 필드 형식만 지키면 내부 구현을 바꿔도
+% 이 파일은 충전 담당 모듈이다. 위 필드 형식만 지키면 내부 구현을 바꿔도
 % main.m 은 그대로 동작한다.
 %
 % 부호 규약: Q > 0 장치로 들어가는 열, W > 0 장치로 들어가는 전력
@@ -28,6 +31,7 @@ function R = charging_mode(cfg, th)
     % ------------------------------------------------------------------
     % 1. 운전 조건
     % ------------------------------------------------------------------
+    validate_charge_inputs(cfg, th);
     P     = cfg.P_bar*1e5;               % 시스템 압력 [Pa]
     T0    = cfg.T0_C + 273.15;           % 주위/저장 온도 [K]
     Tcell = cfg.Tcell_C + 273.15;        % 셀 온도 [K]
@@ -234,3 +238,31 @@ function s = mkstream(no, n, T, P, name)
 % 스트림 구조체: 번호, 몰유량 [kmol/s], 온도 [K], 압력 [Pa], 설명
     s = struct('no', no, 'n', n, 'T', T, 'P', P, 'name', name);
 end
+
+function validate_charge_inputs(cfg, th)
+% Fixed process topology, ideal-gas/graphite model; excludes zero-flow shutdown.
+    fields = {'P_bar','T0_C','Tcell_C','TBch_C','nCO2_feed','X_soec', ...
+              'eff_hex','f_link','dT_link','dV_loss','Ru','F','p0','LHV_C'};
+    for k = 1:numel(fields)
+        f = fields{k};
+        if ~isfield(cfg,f) || ~isnumeric(cfg.(f)) || ~isscalar(cfg.(f)) || ...
+                ~isreal(cfg.(f)) || ~isfinite(cfg.(f))
+            error('charging_mode:input','%s must be a finite real scalar.',f);
+        end
+    end
+    if cfg.P_bar <= 0 || cfg.nCO2_feed <= 0 || cfg.X_soec <= 0 || cfg.X_soec >= 1
+        error('charging_mode:input','Require P>0, feed>0 and 0<X_soec<1.');
+    end
+    if cfg.eff_hex < 0 || cfg.eff_hex > 1 || cfg.f_link < 0 || cfg.f_link > 1 || ...
+            cfg.dT_link < 0 || cfg.dV_loss < 0 || cfg.Ru <= 0 || cfg.F <= 0 || cfg.LHV_C <= 0
+        error('charging_mode:input','Invalid heat-recovery fraction or constant.');
+    end
+    T = [cfg.T0_C cfg.Tcell_C cfg.TBch_C] + 273.15;
+    if any(T < 200 | T > 3500) || cfg.Tcell_C <= cfg.T0_C || cfg.TBch_C <= cfg.T0_C
+        error('charging_mode:input','Temperatures outside this model domain (200..3500 K, hot units>T0).');
+    end
+    if abs(cfg.p0-1e5)>1e-6 || abs(th.p0-cfg.p0)>1e-6
+        error('charging_mode:input','Use a consistent 1 bar standard state in cfg and thermo.');
+    end
+end
+

@@ -15,6 +15,18 @@ Energy System Design (38609) 2026 Fall Term Project.
 2. 저장소 최상위 폴더에서 `main` 을 실행합니다. 하위 폴더 경로는 `main.m` 이 직접 추가합니다.
 3. 표(CSV)와 그림(PNG)이 `results/` 에 저장됩니다.
 
+## 충전 담당 코드·검산·발표 자료
+
+저장소의 Current Folder에서 **`main_charging`**을 실행하면 기준·압력·셀 온도 9개 케이스의 충전 결과, 원시 스트림 재검산, 회귀·오류 주입 시험을 실행합니다. 출력은 `results/charging_review/`입니다. 전체 충전·방전·왕복 효율은 기존 **`main`**으로 계산합니다.
+
+- [충전 실행 및 파일 연결 안내](docs/charging/README.md)
+- [설계 항목·공학식·검산 기준](docs/charging/DESIGN_GUIDE_KO.md)
+- [코드 이해 지침서](docs/charging/CHARGING_STUDY_GUIDE_KO.md) · [발표 구성과 예상 질문](docs/charging/PRESENTATION_NOTES_KO.md)
+- [실제로 수행한 검증과 남은 MATLAB 확인](docs/charging/VERIFICATION_KO.md)
+- [조건 변경·오류 주입 인터랙티브 학습 자료](docs/charging/interactive/README.md)
+
+공개된 참고 수치는 **Python/Cantera 3.0.0 독립 계산 결과**입니다. MATLAB 런타임 및 MATLAB 출력과의 대조는 아직 수행하지 않았습니다.
+
 ## 파일 구성
 
 | 경로 | 내용 | 담당 |
@@ -30,10 +42,10 @@ Energy System Design (38609) 2026 Fall Term Project.
 | `system/settle_heat.m` | thermal link 적용, 전기 가열/방출열 정산 | 팀원 3 |
 | `system/stream_table.m`, `balance_table.m`, `heat_table.m` | 결과표 생성 | 팀원 3 |
 | `system/run_roundtrip.m` | 충전 + 방전 실행, 운전 시간 맞추기, 왕복 효율, 손실 내역 | 팀원 3 |
-| `modes/charging_mode.m` | 충전 모드 (Stream 1~13) | 팀원 1 자리 |
+| `modes/charging_mode.m` | 충전 모드 (Stream 1~13) | 충전 담당 |
 | `modes/discharging_mode.m` | 방전 모드 (Stream 14~29) | 팀원 2 자리 |
 
-`modes/` 의 두 파일은 `main.m` 이 끝까지 돌도록 넣어 둔 기준 구현입니다. 팀원 1, 2의 코드가 오면 아래 인터페이스에 맞춰 교체합니다.
+`modes/charging_mode.m`은 기존 기준 구현의 물리식·인터페이스를 유지하고 입력 검사를 추가했습니다. 충전 전용 검산·학습 자료는 아래 안내를 참고합니다. `modes/discharging_mode.m`은 기존 기준 구현을 유지합니다.
 
 ### 모드 함수 인터페이스
 

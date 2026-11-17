@@ -1,0 +1,47 @@
+Check,Residual,Limit,Pass
+n reference scaled error,0.0,1.0,True
+T reference scaled error,0.0,1.0,True
+P reference scaled error,0.0,1.0,True
+q reference scaled error,0.0,1.0,True
+ql reference scaled error,0.0,1.0,True
+qe reference scaled error,0.0,1.0,True
+qr reference scaled error,0.0,1.0,True
+K_B reference,0.0,3.112429311170058e-07,True
+yCO reference,0.0,2.337057896122733e-08,True
+E0 reference,0.0,9.677620437546509e-08,True
+E_rev reference,0.0,1.0591776620115601e-07,True
+V reference,0.0,1.1591776620115602e-07,True
+V_tn reference,0.0,1.4720987954544323e-07,True
+I reference,0.0,38.694,True
+W_cell reference,0.0,44.451362687674155,True
+Q_hex reference,0.0,5.5905100012261215,True
+Qmax_hex reference,0.0,6.55942353085426,True
+Q_link reference,0.0,0.1,True
+Qel_tot reference,0.0,19.54450888671363,True
+Qrej_tot reference,0.0,24.545096542654928,True
+P_in reference,0.0,63.89587157438779,True
+nC reference,0.0,1.0099999999999999e-07,True
+eta_ch reference,0.0,6.268110730193063e-08,True
+Overall C/O/N balance,0.0,1.1000000000000001e-08,True
+Overall energy balance W,1.9506247054441872e-05,6.479587157438779,True
+HEX energy balance W,1.9550323486328125e-05,0.1,True
+Mixer C/O/N,0.0,1.1000000000000001e-08,True
+Mixer energy W,0.0,6.479587157438779,True
+HEX1 C/O/N,0.0,1.1000000000000001e-08,True
+HEX1 energy W,1.9550323486328125e-05,6.479587157438779,True
+H1 C/O/N,0.0,1.1000000000000001e-08,True
+H1 energy W,0.0,6.479587157438779,True
+SOEC C/O/N,0.0,1.1000000000000001e-08,True
+SOEC energy W,5.960464477539063e-08,6.479587157438779,True
+Trim C/O/N,0.0,1.1000000000000001e-08,True
+Trim energy W,0.0,6.479587157438779,True
+Reactor C/O/N,2.220446049250313e-16,1.1000000000000001e-08,True
+Reactor energy W,0.0,6.479587157438779,True
+Recycle cooler C/O/N,0.0,1.1000000000000001e-08,True
+Recycle cooler energy W,0.0,6.479587157438779,True
+C cooler C/O/N,0.0,1.1000000000000001e-08,True
+C cooler energy W,3.715276974958215e-10,6.479587157438779,True
+O2 cooler C/O/N,0.0,1.1000000000000001e-08,True
+O2 cooler energy W,8.640657564451537e-10,6.479587157438779,True
+HEX positive temperature difference,0.0,0.0,True
+HEX nonnegative entropy generation,0.0,0.001,True
