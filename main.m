@@ -21,7 +21,10 @@
 %    noon_config.m : 과제 지정 조건 (모든 입력값)
 %    thermo/       : Cantera 물성 도우미 함수 (팀원 3)
 %    system/       : 공통 장치 모델, 수지표, 왕복 효율 통합 (팀원 3)
-%    modes/        : charging_mode.m (팀원 1), discharging_mode.m (팀원 2)
+%    run_charging_analysis.m    : 충전 모드 Stream 1~13 (팀원 1)
+%    run_discharging_analysis.m : 방전 모드 Stream 14~29 (팀원 2)
+%      두 파일 모두 R = run_xxx_analysis(cfg, th) 로 부르면 화면 출력 없이 결과만 돌려준다.
+%      인자 없이 단독 실행하면 각 모드만 따로 분석한다.
 %
 %  부호 규약 (전체 공통)
 %    Q > 0 : 장치로 들어가는 열 (가열 필요),  Q < 0 : 장치에서 빼내는 열
@@ -32,7 +35,7 @@ clear; clc; close all;
 
 here = fileparts(mfilename('fullpath'));         % 이 스크립트가 있는 폴더
 if isempty(here), here = pwd; end                % 섹션 단위로 실행할 때는 현재 폴더 사용
-addpath(fullfile(here, 'thermo'), fullfile(here, 'system'), fullfile(here, 'modes'));
+addpath(here, fullfile(here, 'thermo'), fullfile(here, 'system'));   % 최상위(모드 파일) + 공통 함수 폴더
 
 outdir = fullfile(here, 'results');              % 결과 저장 폴더
 if ~exist(outdir, 'dir'), mkdir(outdir); end

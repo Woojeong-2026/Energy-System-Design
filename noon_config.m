@@ -5,7 +5,7 @@ function cfg = noon_config(varargin)
 %   cfg = noon_config('P_bar', 10)           % 이름-값 쌍으로 일부만 변경 (스윕/민감도용)
 %   cfg = noon_config('Tcell_C', 900, 'eff_hex', 0.95)
 %
-% 모든 모드 함수(charging_mode, discharging_mode)는 이 구조체만 입력으로 받는다.
+% 모든 모드 함수(run_charging_analysis, run_discharging_analysis)는 이 구조체만 입력으로 받는다.
 % 숫자를 코드 안에 직접 쓰지 않고 여기서만 바꾸면 전체 결과가 일관되게 바뀐다.
 %
 % 출처: Term_Project_2026_Noon_Energy_revV3.pdf "Assumptions and model definitions"

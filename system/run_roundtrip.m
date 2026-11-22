@@ -3,7 +3,7 @@ function C = run_roundtrip(cfg, th)
 %
 %   C = run_roundtrip(cfg, th)
 %
-%   C.ch, C.dis : charging_mode / discharging_mode 결과 구조체
+%   C.ch, C.dis : run_charging_analysis / run_discharging_analysis 결과 구조체
 %   C.t_ratio   : t_dis / t_ch  (같은 탄소 재고 N_C 를 쓰도록 맞춘 운전 시간 비)
 %   C.eta_ch, C.eta_dis, C.eta_RT : 충전 / 방전 / 전기 왕복 효율 [-]
 %   C.eta_RT_energy : E_out/E_in 으로 직접 구한 왕복 효율 (C.eta_RT 와 같아야 한다)
@@ -15,8 +15,8 @@ function C = run_roundtrip(cfg, th)
 %   eta_dis = E_out / (N_C * LHV_C)
 %   eta_RT  = E_out / E_in = eta_ch * eta_dis        (N_C,stored = N_C,consumed 일 때)
 
-    ch  = charging_mode(cfg, th);        % 팀원 1 모듈: Stream 1~13
-    dis = discharging_mode(cfg, th);     % 팀원 2 모듈: Stream 14~29
+    ch  = run_charging_analysis(cfg, th);     % 팀원 1 모듈: Stream 1~13
+    dis = run_discharging_analysis(cfg, th);  % 팀원 2 모듈: Stream 14~29
 
     % --- 운전 시간 맞추기: N_C,stored = N_C,consumed ---
     %   N_C = nC_ch * t_ch = nC_dis * t_dis   ->   t_dis/t_ch = nC_ch/nC_dis

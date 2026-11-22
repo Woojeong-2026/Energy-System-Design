@@ -6,7 +6,7 @@
 ## 1. 코드 구조도
 
 `main.m` → 통합 함수 → 충전·방전 모델 → 공통 장치 함수(`system/`) → 물성 함수(`thermo/`) → Cantera 순서로 호출합니다.
-파란색은 팀원 3, 초록색은 팀원 1, 주황색은 팀원 2 담당입니다. 점선은 아직 연결되지 않은 부분입니다.
+파란색은 팀원 3, 초록색은 팀원 1, 주황색은 팀원 2 담당입니다.
 
 ```mermaid
 flowchart TB
@@ -21,8 +21,8 @@ flowchart TB
 
     subgraph MODES["모드 모델 (저장소 최상위)"]
         direction LR
-        CH["run_charging_analysis.m<br/>calculate_charging(cfg, th)<br/>Stream 1~13 · P_in · η_ch"]:::t1
-        DIS["run_discharging_analysis.m<br/>Stream 14~29 · P_out · η_dis"]:::t2
+        CH["run_charging_analysis.m<br/>run_charging_analysis(cfg, th)<br/>Stream 1~13 · P_in · η_ch"]:::t1
+        DIS["run_discharging_analysis.m<br/>run_discharging_analysis(cfg, th)<br/>Stream 14~29 · P_out · η_dis"]:::t2
     end
 
     subgraph SYS["system/ — 공통 장치·정산·표 (팀원 3)"]
@@ -45,8 +45,8 @@ flowchart TB
 
     MAIN --> CFG
     MAIN --> RT
-    RT -. "통합 연결 필요<br/>(현재 charging_mode 호출)" .-> CH
-    RT -. "통합 연결 필요<br/>(현재 스크립트 형태)" .-> DIS
+    RT --> CH
+    RT --> DIS
     MODES --> SYS
     MODES --> TH
     SYS --> TH
