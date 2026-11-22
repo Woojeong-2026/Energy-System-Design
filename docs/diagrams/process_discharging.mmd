@@ -1,0 +1,50 @@
+flowchart TB
+    classDef elec fill:#FFF4CC,stroke:#C9A100,color:#3d3000
+    classDef unit fill:#E8F0FE,stroke:#3B6FD8,color:#13254d
+    classDef store fill:#EDEDED,stroke:#666,color:#222
+    classDef cool fill:#E3F4F8,stroke:#2B8FA8,color:#0d3a45
+
+    subgraph FUEL["연료측 루프 (CO/CO2, P = 5 bar)"]
+        direction LR
+        CST[("탄소 저장<br/>25 °C")]:::store
+        SEP["CO2 분리기<br/>25 °C 전기화학 펌프"]:::elec
+        HEX3["HEX 3<br/>향류 ε = 0.85"]:::unit
+        H2["Heater H2"]:::elec
+        RX["Boudouard 반응기 (가스화)<br/>TB,dis = 800 °C<br/>C(s) + CO2 → 2CO (평형)"]:::unit
+        TRIM["Trim unit<br/>800 → 850 °C"]:::elec
+        COOL["냉각기"]:::cool
+        TANK[("CO2 탱크")]:::store
+    end
+
+    SOFC["rSOC — SOFC 모드<br/>Tcell = 850 °C<br/>CO + ½O2 → CO2, U = 0.80<br/>V_dis = E_rev − 0.10 V"]:::elec
+    PWR(["순출력 P_out"]):::elec
+
+    subgraph AIRL["공기측 (O2/N2, 공급 O2 = 양론 × 3)"]
+        direction LR
+        AIR(["주위 공기<br/>1 bar, 25 °C"]):::store
+        COMP["공기 압축기<br/>25 °C 등온 가역"]:::elec
+        HEX4["HEX 4<br/>향류 ε = 0.85"]:::unit
+        H3["Heater H3"]:::elec
+        EXH(["배기"]):::store
+    end
+
+    CST -- "14  C(s)" --> RX
+    SEP -- "15  재순환" --> HEX3
+    HEX3 -- "16" --> H2
+    H2 -- "17" --> RX
+    RX -- "18" --> TRIM
+    TRIM -- "19  연료극 입구" --> SOFC
+    SOFC -- "20  고온측" --> HEX3
+    HEX3 -- "21" --> COOL
+    COOL -- "22" --> SEP
+    SEP -- "23  순수 CO2" --> TANK
+
+    AIR -- "24" --> COMP
+    COMP -- "25" --> HEX4
+    HEX4 -- "26" --> H3
+    H3 -- "27  공기극 입구" --> SOFC
+    SOFC -- "28  고온측" --> HEX4
+    HEX4 -- "29" --> EXH
+
+    SOFC -.-> PWR
+    SOFC -. "thermal link<br/>셀 발열 → 가스화 흡열" .-> RX

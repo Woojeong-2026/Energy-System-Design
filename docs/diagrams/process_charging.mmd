@@ -1,0 +1,36 @@
+flowchart LR
+    classDef elec fill:#FFF4CC,stroke:#C9A100,color:#3d3000
+    classDef unit fill:#E8F0FE,stroke:#3B6FD8,color:#13254d
+    classDef store fill:#EDEDED,stroke:#666,color:#222
+    classDef cool fill:#E3F4F8,stroke:#2B8FA8,color:#0d3a45
+
+    TANK[("CO2 탱크<br/>25 °C")]:::store
+    MIX["혼합기"]:::unit
+    HEX1["HEX 1<br/>향류 ε = 0.85"]:::unit
+    H1["Heater H1<br/>(전기 가열)"]:::elec
+    SOEC["rSOC — SOEC 모드<br/>Tcell = 850 °C<br/>CO2 → CO + ½O2, X = 0.70<br/>V_ch = E_rev + 0.10 V"]:::elec
+    TRIM["Trim unit<br/>850 → 650 °C"]:::unit
+    RX["Boudouard 반응기 + 고체 분리기<br/>TB,ch = 650 °C<br/>2CO → C(s) + CO2 (평형)"]:::unit
+    RC["재순환 냉각기"]:::cool
+    CC["탄소 냉각기"]:::cool
+    OC["O2 냉각기"]:::cool
+    CST[("탄소 저장<br/>25 °C")]:::store
+    VENT["O2 방출 밸브"]:::store
+    PWR(["전력 입력 P_in"]):::elec
+
+    TANK -- "1  CO2" --> MIX
+    MIX -- "2" --> HEX1
+    HEX1 -- "3" --> H1
+    H1 -- "4  연료극 입구" --> SOEC
+    SOEC -- "5  CO/CO2" --> TRIM
+    TRIM -- "6" --> RX
+    RX -- "7  CO/CO2 (고온측)" --> HEX1
+    HEX1 -- "8" --> RC
+    RC -- "9  재순환 25 °C" --> MIX
+    RX -- "10  C(s)" --> CC
+    CC -- "11" --> CST
+    SOEC -- "12  순수 O2" --> OC
+    OC -- "13" --> VENT
+    PWR -.-> SOEC
+    PWR -.-> H1
+    RX <-. "thermal link<br/>(donor가 20 K 이상 뜨거울 때만)" .-> SOEC

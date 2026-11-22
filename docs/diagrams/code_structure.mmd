@@ -1,0 +1,42 @@
+flowchart TB
+    classDef t3 fill:#E8F0FE,stroke:#3B6FD8,color:#13254d
+    classDef t1 fill:#E7F6EC,stroke:#2E8B57,color:#123d25
+    classDef t2 fill:#FFF1E0,stroke:#D9822B,color:#4a2a07
+    classDef cfg fill:#F3F3F3,stroke:#777,color:#222
+
+    MAIN["main.m<br/>(a)~(f) 전체 재현 · 압력/셀 온도 스윕 · 민감도 · 그림"]:::t3
+    CFG["noon_config.m<br/>과제 지정 조건 (P, Tcell, TB, 효율 가정, 상수)"]:::cfg
+    RT["system/run_roundtrip.m<br/>충전+방전 실행 · t_dis/t_ch 맞추기 · η_RT · 손실 내역"]:::t3
+
+    subgraph MODES["모드 모델 (저장소 최상위)"]
+        direction LR
+        CH["run_charging_analysis.m<br/>calculate_charging(cfg, th)<br/>Stream 1~13 · P_in · η_ch"]:::t1
+        DIS["run_discharging_analysis.m<br/>Stream 14~29 · P_out · η_dis"]:::t2
+    end
+
+    subgraph SYS["system/ — 공통 장치·정산·표 (팀원 3)"]
+        direction LR
+        HEX["hex_counterflow<br/>향류 열교환기 ε-모델"]:::t3
+        SET["settle_heat<br/>thermal link · 전기 가열 · 방출열"]:::t3
+        TAB["stream_table · balance_table · heat_table<br/>결과표 · 원소/에너지 잔차"]:::t3
+    end
+
+    subgraph TH["thermo/ — Cantera 물성 도우미 (팀원 3)"]
+        direction LR
+        INIT["thermo_init<br/>gri30.yaml · graphite.yaml"]:::t3
+        KB["K_boudouard<br/>K_B = exp(−ΔG°/RT)"]:::t3
+        EC["E_cell_CO<br/>Nernst E_rev"]:::t3
+        SH["stream_H · stream_T<br/>H = Σ n·h(T), H→T 역산"]:::t3
+        SP["sp_h · sp_s0 · sp_g0<br/>순수 성분 h, s°, g° (Cantera 직접 호출)"]:::t3
+    end
+
+    CANTERA[("Cantera 3.0.0<br/>MATLAB toolbox")]:::cfg
+
+    MAIN --> CFG
+    MAIN --> RT
+    RT -. "통합 연결 필요<br/>(현재 charging_mode 호출)" .-> CH
+    RT -. "통합 연결 필요<br/>(현재 스크립트 형태)" .-> DIS
+    MODES --> SYS
+    MODES --> TH
+    SYS --> TH
+    TH --> CANTERA
